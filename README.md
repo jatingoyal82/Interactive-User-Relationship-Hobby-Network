@@ -7,7 +7,7 @@ A full-stack application for managing user relationships and hobbies, visualized
 - **User Management**: Create, update, and delete users with username, age, and hobbies
 - **Relationship Visualization**: Interactive graph showing users as nodes and friendships as edges
 - **Popularity Scoring**: Automatic calculation based on number of friends and shared hobbies
-- **Drag & Drop**: 
+- **Drag & Drop**:
   - Link users by dragging one node onto another
   - Add hobbies to users by dragging from sidebar
 - **Live Updates**: Real-time graph refresh when data changes
@@ -16,12 +16,14 @@ A full-stack application for managing user relationships and hobbies, visualized
 ## 🛠 Tech Stack
 
 ### Backend
+
 - Node.js + Express + TypeScript
 - MongoDB with Mongoose
 - Jest + Supertest for testing
 - Dotenv for configuration
 
 ### Frontend
+
 - React + TypeScript + Vite
 - React Flow Renderer for graph visualization
 - Axios for API calls
@@ -68,6 +70,7 @@ project-root/
 ## 🚀 Setup Instructions
 
 ### Prerequisites
+
 - Node.js (v18 or higher)
 - MongoDB (local or remote instance)
 - npm or yarn
@@ -75,22 +78,26 @@ project-root/
 ### Backend Setup
 
 1. Navigate to the backend directory:
+
 ```bash
 cd backend
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Create a `.env` file:
+
 ```bash
 PORT=5000
 DB_URL=mongodb://localhost:27017/user-network
 ```
 
 4. Start MongoDB (if running locally):
+
 ```bash
 # On macOS/Linux with Homebrew
 brew services start mongodb-community
@@ -101,6 +108,7 @@ docker run -d -p 27017:27017 --name mongodb mongo
 ```
 
 5. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -110,21 +118,25 @@ The backend will be available at `http://localhost:5000`
 ### Frontend Setup
 
 1. Navigate to the frontend directory:
+
 ```bash
 cd frontend
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Create a `.env` file (optional, defaults to localhost:5000):
+
 ```bash
 VITE_API_URL=http://localhost:5000/api
 ```
 
 4. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -136,16 +148,19 @@ The frontend will be available at `http://localhost:3000`
 ### Backend Tests
 
 Run tests from the backend directory:
+
 ```bash
 npm test
 ```
 
 Run tests in watch mode:
+
 ```bash
 npm run test:watch
 ```
 
 Test coverage includes:
+
 - Popularity score calculation
 - Friendship creation and conflict prevention
 - Deletion prevention when user has friends
@@ -154,30 +169,31 @@ Test coverage includes:
 
 ### Users
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/users` | Get all users |
-| GET | `/api/users/:id` | Get user by ID |
-| POST | `/api/users` | Create new user |
-| PUT | `/api/users/:id` | Update user |
+| Method | Endpoint           | Description                      |
+| ------ | ------------------ | -------------------------------- |
+| GET    | `/api/users`     | Get all users                    |
+| GET    | `/api/users/:id` | Get user by ID                   |
+| POST   | `/api/users`     | Create new user                  |
+| PUT    | `/api/users/:id` | Update user                      |
 | DELETE | `/api/users/:id` | Delete user (only if no friends) |
 
 ### Relationships
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/users/:id/link` | Create friendship |
+| Method | Endpoint                  | Description       |
+| ------ | ------------------------- | ----------------- |
+| POST   | `/api/users/:id/link`   | Create friendship |
 | DELETE | `/api/users/:id/unlink` | Remove friendship |
 
 ### Graph Data
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/graph` | Get nodes and edges for React Flow |
+| Method | Endpoint       | Description                        |
+| ------ | -------------- | ---------------------------------- |
+| GET    | `/api/graph` | Get nodes and edges for React Flow |
 
 ### Request/Response Examples
 
 **Create User:**
+
 ```json
 POST /api/users
 {
@@ -188,6 +204,7 @@ POST /api/users
 ```
 
 **Link Users:**
+
 ```json
 POST /api/users/{userId}/link
 {
@@ -198,22 +215,24 @@ POST /api/users/{userId}/link
 ## 🎯 Popularity Score Formula
 
 The popularity score is calculated as:
+
 ```
 popularityScore = numUniqueFriends + (sharedHobbies * 0.5)
 ```
 
 Where:
+
 - `numUniqueFriends`: Number of unique friends
 - `sharedHobbies`: Number of hobbies shared with at least one friend
 
 ## 🎨 UI Features
 
 - **Graph View**: Interactive visualization with zoom, pan, and minimap
-- **Sidebar**: 
+- **Sidebar**:
   - Draggable hobby chips
   - Search/filter hobbies
   - User list with quick selection
-- **User Panel**: 
+- **User Panel**:
   - Create/edit user form
   - Add/remove hobbies
   - Delete user (with confirmation)
@@ -223,34 +242,10 @@ Where:
 
 ## 🚢 Deployment
 
-### Quick Deploy
+1. **Backend (Render): https://interactive-user-relationship-hobby-knqj.onrender.com**
+2. **Frontend (Vercel): https://interactive-user-relationship-hobby-five.vercel.app**
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
-
-**Quick Steps:**
-
-1. **Backend (Render):**
-   - Connect GitHub repo to Render
-   - Set root directory: `backend`
-   - Build: `npm install && npm run build`
-   - Start: `npm start`
-   - Add env vars: `DB_URL`, `PORT`
-
-2. **Frontend (Vercel):**
-   - Connect GitHub repo to Vercel
-   - Set root directory: `frontend`
-   - Framework: Vite (auto-detected)
-   - Add env var: `VITE_API_URL` = `https://your-backend.onrender.com/api`
-
-3. **Database:**
-   - Use MongoDB Atlas (free tier available)
-   - Update `DB_URL` in Render with Atlas connection string
-
-For complete instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
-
-## 🐳 Docker (Optional)
-
-A `docker-compose.yml` file is included for local development with MongoDB:
+## 🐳 Docker (Optional)`docker-compose.yml` file is included for local development with MongoDB:
 
 ```bash
 docker-compose up -d
@@ -269,24 +264,22 @@ docker-compose up -d
 ## 🐛 Troubleshooting
 
 **Backend won't start:**
+
 - Check if MongoDB is running
 - Verify `DB_URL` in `.env` is correct
 - Check if port 5000 is available
 
 **Frontend can't connect to backend:**
+
 - Ensure backend is running on port 5000
 - Check `VITE_API_URL` in frontend `.env`
 - Verify CORS is enabled in backend
 
 **Tests failing:**
+
 - Make sure MongoDB Memory Server dependencies are installed
 - Run `npm install` in backend directory
-
-## 📄 License
-
-ISC
 
 ## 👥 Contributing
 
 This is a development assignment project. Feel free to extend and improve!
-
