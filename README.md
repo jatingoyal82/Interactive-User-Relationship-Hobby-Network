@@ -223,24 +223,30 @@ Where:
 
 ## 🚢 Deployment
 
-### Backend (Render)
+### Quick Deploy
 
-1. Connect your GitHub repository to Render
-2. Create a new Web Service
-3. Set build command: `npm install && npm run build`
-4. Set start command: `npm start`
-5. Add environment variables:
-   - `PORT`: 5000 (or Render's assigned port)
-   - `DB_URL`: Your MongoDB connection string
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
 
-### Frontend (Vercel)
+**Quick Steps:**
 
-1. Connect your GitHub repository to Vercel
-2. Set root directory to `frontend`
-3. Set build command: `npm run build`
-4. Set output directory: `dist`
-5. Add environment variable:
-   - `VITE_API_URL`: Your backend API URL
+1. **Backend (Render):**
+   - Connect GitHub repo to Render
+   - Set root directory: `backend`
+   - Build: `npm install && npm run build`
+   - Start: `npm start`
+   - Add env vars: `DB_URL`, `PORT`
+
+2. **Frontend (Vercel):**
+   - Connect GitHub repo to Vercel
+   - Set root directory: `frontend`
+   - Framework: Vite (auto-detected)
+   - Add env var: `VITE_API_URL` = `https://your-backend.onrender.com/api`
+
+3. **Database:**
+   - Use MongoDB Atlas (free tier available)
+   - Update `DB_URL` in Render with Atlas connection string
+
+For complete instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
 
 ## 🐳 Docker (Optional)
 
