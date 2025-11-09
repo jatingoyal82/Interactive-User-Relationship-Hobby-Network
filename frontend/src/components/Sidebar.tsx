@@ -45,8 +45,20 @@ const Sidebar: React.FC<SidebarProps> = ({
     );
   };
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (e: React.DragEvent) => {
     onHobbyDragEnd();
+    
+    // Check if dropped on a node
+    const element = document.elementFromPoint(e.clientX, e.clientY);
+    const nodeElement = element?.closest('.react-flow__node');
+    if (nodeElement) {
+      const nodeId = nodeElement.getAttribute('data-id');
+      if (nodeId) {
+        window.dispatchEvent(
+          new CustomEvent('hobby-drop', { detail: { nodeId } })
+        );
+      }
+    }
   };
 
   return (
@@ -70,7 +82,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 key={hobby}
                 draggable
                 onDragStart={(e) => handleDragStart(e, hobby)}
-                onDragEnd={handleDragEnd}
+                onDragEnd={(e) => handleDragEnd(e)}
                 className="px-4 py-2 bg-blue-500 text-white rounded-full cursor-move hover:bg-blue-600 transition-colors shadow-md hover:shadow-lg active:scale-95"
               >
                 {hobby}

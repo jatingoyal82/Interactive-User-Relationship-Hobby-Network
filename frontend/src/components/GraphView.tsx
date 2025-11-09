@@ -80,7 +80,7 @@ const GraphViewInner: React.FC<GraphViewProps> = ({
     [onNodeDrop]
   );
 
-  const onNodeMouseEnter = useCallback((event: React.MouseEvent, node: Node) => {
+  const onNodeMouseEnter = useCallback((_event: React.MouseEvent, node: Node) => {
     if (draggedHobbyRef.current) {
       // Visual feedback when hovering with hobby
       node.style = { ...node.style, opacity: 0.8 };
@@ -88,46 +88,41 @@ const GraphViewInner: React.FC<GraphViewProps> = ({
     }
   }, [setNodes]);
 
-  const onNodeMouseLeave = useCallback((event: React.MouseEvent, node: Node) => {
+  const onNodeMouseLeave = useCallback((_event: React.MouseEvent, node: Node) => {
     if (draggedHobbyRef.current) {
       node.style = { ...node.style, opacity: 1 };
       setNodes((nds) => nds.map((n) => (n.id === node.id ? node : n)));
     }
   }, [setNodes]);
 
-  const onNodeMouseUp = useCallback(
-    (event: React.MouseEvent, node: Node) => {
-      if (draggedHobbyRef.current && onHobbyDrop) {
-        onHobbyDrop(node.id, draggedHobbyRef.current);
-        draggedHobbyRef.current = null;
-      }
-    },
-    [onHobbyDrop]
-  );
-
   const onPaneClick = useCallback(() => {
     draggedHobbyRef.current = null;
   }, []);
 
-  // Expose drag handlers to parent
+  // Handle hobby drag and drop
   useEffect(() => {
-    const handleHobbyDragStart = (hobby: string) => {
-      draggedHobbyRef.current = hobby;
-    };
+    const handleHobbyDragStartEvent = ((e: CustomEvent) => {
+      draggedHobbyRef.current = e.detail.hobby;
+    }) as EventListener;
 
-    window.addEventListener('hobby-drag-start', ((e: CustomEvent) => {
-      handleHobbyDragStart(e.detail.hobby);
-    }) as EventListener);
+    const handleHobbyDropEvent = ((e: CustomEvent) => {
+      if (e.detail.nodeId && draggedHobbyRef.current && onHobbyDrop) {
+        onHobbyDrop(e.detail.nodeId, draggedHobbyRef.current);
+        draggedHobbyRef.current = null;
+      }
+    }) as EventListener;
+
+    window.addEventListener('hobby-drag-start', handleHobbyDragStartEvent);
+    window.addEventListener('hobby-drop', handleHobbyDropEvent);
 
     return () => {
-      window.removeEventListener('hobby-drag-start', ((e: CustomEvent) => {
-        handleHobbyDragStart(e.detail.hobby);
-      }) as EventListener);
+      window.removeEventListener('hobby-drag-start', handleHobbyDragStartEvent);
+      window.removeEventListener('hobby-drop', handleHobbyDropEvent);
     };
-  }, []);
+  }, [onHobbyDrop]);
 
   const handleNodeClick = useCallback(
-    (event: React.MouseEvent, node: Node) => {
+    (_event: React.MouseEvent, node: Node) => {
       if (onNodeClick) {
         onNodeClick(node.id);
       }
@@ -147,7 +142,6 @@ const GraphViewInner: React.FC<GraphViewProps> = ({
         onNodeDragStop={onNodeDragStop}
         onNodeMouseEnter={onNodeMouseEnter}
         onNodeMouseLeave={onNodeMouseLeave}
-        onNodeMouseUp={onNodeMouseUp}
         onPaneClick={onPaneClick}
         onNodeClick={handleNodeClick}
         nodeTypes={nodeTypes}
