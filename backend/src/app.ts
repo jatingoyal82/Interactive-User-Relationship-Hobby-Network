@@ -10,8 +10,12 @@ dotenv.config();
 const app: Express = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors());
+// CORS configuration - allows all origins for easier deployment
+// You can restrict this later if needed
+app.use(cors({
+  origin: true, // Allow all origins
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
