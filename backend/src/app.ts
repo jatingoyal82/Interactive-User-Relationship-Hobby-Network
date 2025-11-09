@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api', userRoutes);
 
 // Health check
-app.get('/health', (req, res) => {
+app.get('/health', (req: express.Request, res: express.Response) => {
   res.status(200).json({ success: true, message: 'Server is running' });
 });
 
